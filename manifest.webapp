@@ -1,0 +1,15 @@
+{
+    "version": "1.0.0",
+    "name": "Scanner",
+    "description": "QRCode Scanner",
+    "developer": {
+        "name": "Fred Lin",
+        "url": "https://github.com/gasolin/qrcode_scanner"
+    },
+    "launch_path": "/index.html",
+    "default_locale": "en",
+    "icons":{
+        "128": "/style/icons/icon128.png"
+    },
+    "installs_allowed_from": ["*"]
+}

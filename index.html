@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+Exchange the line above for this to enable offline support
+<html lang="en" manifest="manifest.appcache">
+-->
+  <head>
+	<meta charset="UTF-8">
+	<title>QRCode Scanner</title>
+    <meta name="description" content="QRCode scanner">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="icon" href="style/icons/favicon.ico" type="image/x-icon">
+    <!--[if IE]><link rel="shortcut icon" href="style/icons/favicon.ico"  type="image/x-icon"><![endif]-->
+    <link rel="style/icons/apple-touch-icon-precomposed" href="apple-touch-icon-precomposed.png">
+
+    <script defer src="js/grid.js"></script>
+    <script defer src="js/version.js"></script>
+    <script defer src="js/detector.js"></script>
+    <script defer src="js/formatinf.js"></script>
+    <script defer src="js/errorlevel.js"></script>
+    <script defer src="js/bitmat.js"></script>
+    <script defer src="js/datablock.js"></script>
+    <script defer src="js/bmparser.js"></script>
+    <script defer src="js/datamask.js"></script>
+    <script defer src="js/rsdecoder.js"></script>
+    <script defer src="js/gf256poly.js"></script>
+    <script defer src="js/gf256.js"></script>
+    <script defer src="js/decoder.js"></script>
+    <script defer src="js/qrcode.js"></script>
+    <script defer src="js/findpat.js"></script>
+    <script defer src="js/alignpat.js"></script>
+    <script defer src="js/databr.js"></script>
+    <script defer src="js/main.js"></script>
+    <!--
+    <script type="text/javascript" src="llqrcode.js"></script>
+    -->
+    <link rel="stylesheet" href="style/main.css">
+  </head>
+  <body>
+    <!-- Add your site or application content here -->
+	<center>
+<video id="v" width="320" height="240"></video>
+<button id="capture">Capture</button><br>
+<canvas id="qr-canvas" width="320" height="240"></canvas>
+<div id="message"></div>
+<img id="p" src="http://placekitten.com/g/320/240" alt="photo">
+    </center>
+    <!-- App Install detection -->
+    <!--<script src="js/app_installer.js"></script>-->
+
+    <!-- Debugger - remove for production -->
+    <!--<script src="https://getfirebug.com/firebug-lite.js"></script>-->
+
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+    <!--<script>
+        var _gaq=[["_setAccount","UA-XXXXX-X"],["_trackPageview"]];
+        (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
+        g.src=("https:"==location.protocol?"//ssl":"//www")+".google-analytics.com/ga.js";
+        s.parentNode.insertBefore(g,s)}(document,"script"));
+    </script>-->
+  </body>
+</html>
