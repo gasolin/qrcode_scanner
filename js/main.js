@@ -24,18 +24,19 @@ var QRCodeScanner = {
         audio: false
 	  },
 	  function(stream) {
-	    if (navigator.mozGetUserMedia) {
-	      self.video.mozSrcObject = stream;
-	    } else {
-          var vendorURL = window.URL || window.webkitURL;
-          self.video.src = vendorURL.createObjectURL(stream);
-	    }
+	    // if (navigator.mozGetUserMedia) {
+	    //   self.video.mozSrcObject = stream;
+	    // } else {
+      var vendorURL = window.URL || window.webkitURL;
+      self.video.src = vendorURL.createObjectURL(stream);
+	    // }
 	    self.video.play();
 	  },
       function(err) {
 	    console.log("An error occured! " + err);
 	  }
     );
+
 	this.initCanvas(640,480);
 	qrcode.callback = this.read;
 
@@ -53,6 +54,7 @@ var QRCodeScanner = {
     var capture = document.getElementById('capture');
     capture.addEventListener('click', function(ev){
       self.takepicture();
+      ev.preventDefault();
     });
   },
 
@@ -77,10 +79,10 @@ var QRCodeScanner = {
   },
 
   handleFiles: function scanner_handleFiles(f) {
-	var o=[];
-	for(var i =0;i<f.length;i++)
-	{
-	  var reader = new FileReader();
+    var o=[];
+    for(var i =0;i<f.length;i++)
+    {
+      var reader = new FileReader();
 
       reader.onload = (function(theFile) {
         return function(e) {
@@ -95,22 +97,22 @@ var QRCodeScanner = {
 
   imageData: null,
   initCanvas: function scanner_initCanvas(ww,hh) {
-	this.canvas.addEventListener("dragenter", this.dragenter, false);  
-	this.canvas.addEventListener("dragover", this.dragover, false);  
-	this.canvas.addEventListener("drop", this.drop.bind(this), false);
-	var w = ww;
-	var h = hh;
-	this.canvas.style.width = w + "px";
-	this.canvas.style.height = h + "px";
-	this.canvas.width = w;
-	this.canvas.height = h;
-	this.canvas.getContext("2d").clearRect(0, 0, w, h);
-	this.imageData = this.canvas.getContext("2d").getImageData(0,0,320,240);
+    this.canvas.addEventListener("dragenter", this.dragenter, false);
+    this.canvas.addEventListener("dragover", this.dragover, false);
+    this.canvas.addEventListener("drop", this.drop.bind(this), false);
+    var w = ww;
+    var h = hh;
+    this.canvas.style.width = w + "px";
+    this.canvas.style.height = h + "px";
+    this.canvas.width = w;
+    this.canvas.height = h;
+    this.canvas.getContext("2d").clearRect(0, 0, w, h);
+    this.imageData = this.canvas.getContext("2d").getImageData(0,0,320,240);
   },
 
   takepicture: function scanner_takepicture() {
-	this.canvas.getContext('2d').drawImage(this.video, 0, 0, this.width, this.height);
-	var data = this.canvas.toDataURL('image/png');
+    this.canvas.getContext('2d').drawImage(this.video, 0, 0, this.width, this.height);
+    var data = this.canvas.toDataURL('image/png');
   	this.photo.setAttribute('src', data);
   	qrcode.decode();
   },
