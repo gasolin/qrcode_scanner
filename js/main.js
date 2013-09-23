@@ -6,10 +6,18 @@ var QRCodeScanner = {
   height: 240,
   streaming: false,
 
-  read: function scanner_read(a) {
-	alert(a);
-	var msg = document.getElementById('message');
-	msg.innerText = a;
+  read: function scanner_read(txt) {
+    // alert(txt);
+    var msg = document.getElementById('message');
+    msg.innerHTML = this.formatContent(txt);
+  },
+
+  formatContent: function scanner_format(txt) {
+    if (txt.indexOf('http') === 0) {
+      return '<a href="' + txt + '" target="_blank">' + txt + '</a>';
+    } else {
+      return txt;
+    }
   },
 
   // imageData: null,
@@ -43,7 +51,7 @@ var QRCodeScanner = {
     this.canvas.addEventListener("dragover", this.dragover, false);
     this.canvas.addEventListener("drop", this.drop.bind(this), false);
 
-    qrcode.callback = this.read;
+    qrcode.callback = this.read.bind(this);
 
     this.video.addEventListener('canplay', function(ev){
       if (!self.streaming) {
