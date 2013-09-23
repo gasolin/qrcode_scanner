@@ -3,7 +3,7 @@ var QRCodeScanner = {
   video: document.getElementById('v'),
   // photo: document.getElementById('p'),
   width: 320,
-  height: 0,
+  height: 240,
   streaming: false,
 
   read: function scanner_read(a) {
@@ -12,6 +12,8 @@ var QRCodeScanner = {
 	msg.innerText = a;
   },
 
+  // imageData: null,
+  context: null,
   init: function scanner_init() {
   	navigator.getMedia = ( navigator.getUserMedia ||
                          navigator.webkitGetUserMedia ||
@@ -19,35 +21,47 @@ var QRCodeScanner = {
                          navigator.msGetUserMedia);
   	var self = this;
   	navigator.getMedia(
-	  {
-	    video: true,
+      {
+        video: true,
         audio: false
-	  },
-	  function(stream) {
-	    // if (navigator.mozGetUserMedia) {
-	    //   self.video.mozSrcObject = stream;
-	    // } else {
-      var vendorURL = window.URL || window.webkitURL;
-      self.video.src = vendorURL.createObjectURL(stream);
-	    // }
-	    self.video.play();
-	  },
-      function(err) {
-	    console.log("An error occured! " + err);
-	  }
+      },
+      function(stream) {
+        // if (navigator.mozGetUserMedia) {
+        //   self.video.mozSrcObject = stream;
+        // } else {
+        var vendorURL = window.URL || window.webkitURL;
+        self.video.src = vendorURL.createObjectURL(stream);
+        // }
+        self.video.play();
+      },
+        function(err) {
+        console.log("An error occured! " + err);
+      }
     );
 
-	this.initCanvas(320,240);
-	qrcode.callback = this.read;
+    this.canvas.addEventListener("dragenter", this.dragenter, false);
+    this.canvas.addEventListener("dragover", this.dragover, false);
+    this.canvas.addEventListener("drop", this.drop.bind(this), false);
 
-	this.video.addEventListener('canplay', function(ev){
-    if (!self.streaming) {
-      self.height = self.video.videoHeight / (self.video.videoWidth/self.width);
-      self.video.setAttribute('width', self.width);
-      self.video.setAttribute('height', self.height);
-      self.canvas.setAttribute('width', self.width);
-      self.canvas.setAttribute('height', self.height);
-      self.streaming = true;
+    qrcode.callback = this.read;
+
+    this.video.addEventListener('canplay', function(ev){
+      if (!self.streaming) {
+        // self.height = self.video.videoHeight / (self.video.videoWidth/self.width);
+        self.video.setAttribute('width', self.width);
+        self.video.setAttribute('height', self.height);
+        self.canvas.setAttribute('width', self.width);
+        self.canvas.setAttribute('height', self.height);
+        self.streaming = true;
+        // console.log('w:'+self.video.videoWidth+'/h:'+self.video.videoHeight);
+        self.canvas.style.width = self.width + "px";
+        self.canvas.style.height = self.height + "px";
+        self.canvas.width = self.width;
+        self.canvas.height = self.height;
+        self.context = self.canvas.getContext("2d");
+        self.context.clearRect(0, 0, self.width, self.height);
+        // self.imageData = self.context.getImageData(0,0,
+        //   self.video.videoWidth,self.video.videoHeight);
       }
     }, false);
 
@@ -95,23 +109,8 @@ var QRCodeScanner = {
     }
   },
 
-  imageData: null,
-  initCanvas: function scanner_initCanvas(ww,hh) {
-    this.canvas.addEventListener("dragenter", this.dragenter, false);
-    this.canvas.addEventListener("dragover", this.dragover, false);
-    this.canvas.addEventListener("drop", this.drop.bind(this), false);
-    var w = ww;
-    var h = hh;
-    this.canvas.style.width = w + "px";
-    this.canvas.style.height = h + "px";
-    this.canvas.width = w;
-    this.canvas.height = h;
-    this.canvas.getContext("2d").clearRect(0, 0, w, h);
-    this.imageData = this.canvas.getContext("2d").getImageData(0,0,320,240);
-  },
-
   takepicture: function scanner_takepicture() {
-    this.canvas.getContext('2d').drawImage(this.video, 0, 0, this.width, this.height);
+    this.context.drawImage(this.video, 0, 0, this.width, this.height);
     var data = this.canvas.toDataURL('image/png');
     // this.photo.setAttribute('src', data);
   	qrcode.decode();
