@@ -1,7 +1,7 @@
 var QRCodeScanner = {
   canvas: document.getElementById("qr-canvas"),
   video: document.getElementById('v'),
-  photo: document.getElementById('p'),
+  // photo: document.getElementById('p'),
   width: 320,
   height: 0,
   streaming: false,
@@ -37,7 +37,7 @@ var QRCodeScanner = {
 	  }
     );
 
-	this.initCanvas(640,480);
+	this.initCanvas(320,240);
 	qrcode.callback = this.read;
 
 	this.video.addEventListener('canplay', function(ev){
@@ -113,7 +113,7 @@ var QRCodeScanner = {
   takepicture: function scanner_takepicture() {
     this.canvas.getContext('2d').drawImage(this.video, 0, 0, this.width, this.height);
     var data = this.canvas.toDataURL('image/png');
-  	this.photo.setAttribute('src', data);
+    // this.photo.setAttribute('src', data);
   	qrcode.decode();
   },
 }
