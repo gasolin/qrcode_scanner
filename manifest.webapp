@@ -8,8 +8,11 @@
     },
     "launch_path": "/index.html",
     "default_locale": "en",
-    "icons":{
+    "icons": {
         "128": "/style/icons/icon128.png"
     },
-    "installs_allowed_from": ["*"]
+    "installs_allowed_from": ["*"],
+    "permission": {
+      "video-capture": {}
+    }
 }
