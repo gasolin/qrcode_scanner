@@ -75,7 +75,7 @@ var QRCodeScanner = {
 
     var capture = document.getElementById('capture');
     capture.addEventListener('click', function(ev){
-      self.takepicture();
+      self.scanQRCode();
       ev.preventDefault();
     });
   },
@@ -117,7 +117,7 @@ var QRCodeScanner = {
     }
   },
 
-  takepicture: function scanner_takepicture() {
+  scanQRCode: function scanner_scanQRCode() {
     this.context.drawImage(this.video, 0, 0, this.width, this.height);
     var data = this.canvas.toDataURL('image/png');
     // this.photo.setAttribute('src', data);
