@@ -6,10 +6,16 @@ var QRCodeScanner = {
   height: 240,
   streaming: false,
 
+  /**
+   * Present content on screen
+   */
   read: function scanner_read(txt) {
     // alert(txt);
-    var msg = document.getElementById('message');
-    msg.innerHTML = this.formatContent(txt);
+    if (txt) {
+      // this.video.pause();
+      var msg = document.getElementById('message');
+      msg.innerHTML = this.formatContent(txt);
+    }
   },
 
   formatContent: function scanner_format(txt) {
@@ -22,6 +28,7 @@ var QRCodeScanner = {
 
   // imageData: null,
   context: null,
+
   init: function scanner_init() {
   	navigator.getMedia = ( navigator.getUserMedia ||
                          navigator.webkitGetUserMedia ||
@@ -117,7 +124,11 @@ var QRCodeScanner = {
     }
   },
 
+  /**
+   * Decode the QRCode
+   */
   scanQRCode: function scanner_scanQRCode() {
+    // this.video.play();
     this.context.drawImage(this.video, 0, 0, this.width, this.height);
     var data = this.canvas.toDataURL('image/png');
     // this.photo.setAttribute('src', data);
