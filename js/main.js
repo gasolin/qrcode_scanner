@@ -81,10 +81,14 @@ var QRCodeScanner = {
     }, false);
 
     var capture = document.getElementById('capture');
-    capture.addEventListener('click', function(ev){
-      self.scanQRCode();
-      ev.preventDefault();
-    });
+    capture.style.display = 'none';	 
+
+    this.video.addEventListener('play', function(){ 
+      //It should repeatly capture till a qrcode is successfully captured.
+      setInterval(function(){
+        self.scanQRCode();
+      }, 1000);
+    }, false);
   },
 
   dragenter: function scanner_dragenter(e) {
@@ -132,8 +136,22 @@ var QRCodeScanner = {
     this.context.drawImage(this.video, 0, 0, this.width, this.height);
     var data = this.canvas.toDataURL('image/png');
     // this.photo.setAttribute('src', data);
-  	qrcode.decode();
-  },
+
+    if(qrcode.decode()){
+      // Stop automatic capture.
+      var capture = document.getElementById('capture');
+      capture.style.display = 'block';
+      this.video.pause();
+ 
+      var self = this;
+      // Restart video capturing.
+      capture.addEventListener('click', function(){
+        document.getElementById('message').innerHTML = "";
+        capture.style.display = 'none';
+        self.video.play();
+      }, false);
+    }
+  }
 }
 
 window.addEventListener('load', function onload_scanner() {
