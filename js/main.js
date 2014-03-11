@@ -1,6 +1,7 @@
 var QRCodeScanner = {
   canvas: document.getElementById("qr-canvas"),
   video: document.getElementById('v'),
+  capture: document.getElementById('capture'),
   // photo: document.getElementById('p'),
   width: 320,
   height: 240,
@@ -30,12 +31,12 @@ var QRCodeScanner = {
   context: null,
 
   init: function scanner_init() {
-  	navigator.getMedia = ( navigator.getUserMedia ||
+    navigator.getMedia = ( navigator.getUserMedia ||
                          navigator.webkitGetUserMedia ||
                          navigator.mozGetUserMedia ||
                          navigator.msGetUserMedia);
-  	var self = this;
-  	navigator.getMedia(
+    var self = this;
+    navigator.getMedia(
       {
         video: true,
         audio: false
@@ -60,7 +61,7 @@ var QRCodeScanner = {
 
     qrcode.callback = this.read.bind(this);
 
-    this.video.addEventListener('canplay', function(ev){
+    this.video.addEventListener('canplay', function(ev) {
       if (!self.streaming) {
         // self.height = self.video.videoHeight / (self.video.videoWidth/self.width);
         self.video.setAttribute('width', self.width);
@@ -80,8 +81,7 @@ var QRCodeScanner = {
       }
     }, false);
 
-    var capture = document.getElementById('capture');
-    capture.style.display = 'none';	 
+    this.capture.style.display = 'none';
 
     this.video.addEventListener('play', function(){ 
       //It should repeatly capture till a qrcode is successfully captured.
@@ -112,9 +112,8 @@ var QRCodeScanner = {
   },
 
   handleFiles: function scanner_handleFiles(f) {
-    var o=[];
-    for(var i =0;i<f.length;i++)
-    {
+    var o = [];
+    for (var i =0; i < f.length; i++) {
       var reader = new FileReader();
 
       reader.onload = (function(theFile) {
@@ -139,20 +138,19 @@ var QRCodeScanner = {
 
     if(qrcode.decode()){
       // Stop automatic capture.
-      var capture = document.getElementById('capture');
-      capture.style.display = 'block';
+      this.capture.style.display = 'block';
       this.video.pause();
  
       var self = this;
       // Restart video capturing.
-      capture.addEventListener('click', function(){
+      this.capture.addEventListener('click', function(){
         document.getElementById('message').innerHTML = "";
-        capture.style.display = 'none';
+        self.capture.style.display = 'none';
         self.video.play();
       }, false);
     }
   }
-}
+};
 
 window.addEventListener('load', function onload_scanner() {
   window.removeEventListener('load', onload_scanner);
